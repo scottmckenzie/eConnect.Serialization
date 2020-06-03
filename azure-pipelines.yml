@@ -10,25 +10,25 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: dotnet restore
   inputs:
-    restoreSolution: '$(solution)'
+    command: restore
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: dotnet build $(buildConfiguration)
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: build
+    arguments: --configuration $(buildConfiguration)
+    projects: eConnect.Serialization/eConnect.Serialization.csproj
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  displayName: dotnet pack
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: pack
+    arguments: --configuration $(buildConfiguration)
+    packagesToPack: eConnect.Serialization/eConnect.Serialization.csproj
+    nobuild: true
