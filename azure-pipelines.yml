@@ -33,5 +33,5 @@ steps:
     packagesToPack: eConnect.Serialization/eConnect.Serialization.csproj
     nobuild: true
 
-- script: dotnet nuget push $(Build.ArtifactStagingDirectory)/**/*.nupkg --api-key $(nugetApiKey)
+- script: dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --api-key $(nugetApiKey)
   displayName: push package to nuget.org
