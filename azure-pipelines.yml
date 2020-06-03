@@ -32,3 +32,10 @@ steps:
     arguments: --configuration $(buildConfiguration)
     packagesToPack: eConnect.Serialization/eConnect.Serialization.csproj
     nobuild: true
+
+- task: DotNetCoreCLI@2
+  displayName: push package to nuget.org
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: nugetServiceConnection
